@@ -44,7 +44,8 @@ class VOCDataset(torch.utils.data.Dataset):
         if self.transform:
             image, boxes = self.transform(image, boxes)
 
-        label_matrix = torch.zeros((self.S, self.S, self.C + 5))
+        #label_matrix = torch.zeros((self.S, self.S, self.C + 5))
+        label_matrix = torch.zeros((self.S, self.S, self.C + 5*self.B))
         for box in boxes:
             class_label, x, y, width, height = box.tolist()
             class_label = int(class_label)
@@ -54,7 +55,7 @@ class VOCDataset(torch.utils.data.Dataset):
             # By multiplying by S and flooring it, we get what box its in
             i, j = int(self.S * y), int(self.S * x)
             # Location relative to the cell
-            x_cell, y_cell = self.S * X - j, self.S * y - i
+            x_cell, y_cell = self.S * x - j, self.S * y - i
             # Width relative to cell size
             width_cell, height_cell = (
                 width * self.S,

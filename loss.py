@@ -30,7 +30,7 @@ class YoloLoss(nn.Module):
             )
         )
 
-        box_target = exists_box * target[..., 21:25]
+        box_targets = exists_box * target[..., 21:25]
 
         box_predictions[..., 2:4] = torch.sign(box_predictions[..., 2:4]) * torch.sqrt(
                 torch.abs(box_predictions[..., 2:4] + 1e-6)
@@ -40,7 +40,7 @@ class YoloLoss(nn.Module):
 
         box_loss = self.mse(
             torch.flatten(box_predictions, end_dim=-2),
-            torch.flatten([box_targets, end_dim=-2]),
+            torch.flatten(box_targets, end_dim=-2),
         )
 
         # For Object loss
@@ -75,8 +75,8 @@ class YoloLoss(nn.Module):
         loss = (
             self.lambda_coord * box_loss # First two rows of loss in paper
             + object_loss
-                + self.lambda_noobj * no object_loss
-                    + class_loss
+            + self.lambda_noobj * no_object_loss
+            + class_loss
         )
 
         return loss
