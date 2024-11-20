@@ -22,10 +22,10 @@ seed = 123
 torch.manual_seed(seed)
 
 # Hyperparameters etc.
-LEARNING_RATE = 2e-5
+LEARNING_RATE = 1e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-BATCH_SIZE = 16 # what is batch size?, try increasing this later
-WEIGHT_DECAY = 0 # try changing this
+BATCH_SIZE = 32 # what is batch size?, try increasing this later
+WEIGHT_DECAY = 1e-4 # try changing this
 EPOCHS = 100
 NUM_WORKERS = 2
 PIN_MEMORY = True
@@ -79,7 +79,7 @@ def main():
 
 
     train_dataset = VOCDataset(
-        "data/100examples.csv",
+        "data/train.csv",
         transform=transform,
         img_dir=IMG_DIR,
         label_dir=LABEL_DIR,
@@ -111,15 +111,15 @@ def main():
     )
 
     for epoch in range(EPOCHS):
-        for x, y in train_loader:
-           x = x.to(DEVICE)
-           for idx in range(8):
-               bboxes = cellboxes_to_boxes(model(x))
-               bboxes = non_max_suppression(bboxes[idx], iou_threshold=0.5, threshold=0.4, box_format="midpoint")
-               plot_image(x[idx].permute(1,2,0).to("cpu"), bboxes)
+        #for x, y in train_loader:
+        #   x = x.to(DEVICE)
+        #   for idx in range(8):
+        #       bboxes = cellboxes_to_boxes(model(x))
+        #       bboxes = non_max_suppression(bboxes[idx], iou_threshold=0.5, threshold=0.4, box_format="midpoint")
+        #       plot_image(x[idx].permute(1,2,0).to("cpu"), bboxes)
 
-           import sys
-           sys.exit()
+        #   import sys
+        #   sys.exit()
 
         pred_boxes, target_boxes = get_bboxes(
             train_loader, model, iou_threshold=0.5, threshold=0.4
