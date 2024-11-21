@@ -29,8 +29,9 @@ WEIGHT_DECAY = 1e-4 # try changing this
 EPOCHS = 100
 NUM_WORKERS = 2
 PIN_MEMORY = True
-LOAD_MODEL = True
-LOAD_MODEL_FILE = "overfit.pth.tar"
+LOAD_MODEL = False
+#LOAD_MODEL_FILE = "overfit.pth.tar"
+LOAD_MODEL_FILE = "modelv2.pth.tar"
 IMG_DIR = "data/images"
 LABEL_DIR = "data/labels"
 
@@ -137,6 +138,7 @@ def main():
                 "optimizer": optimizer.state_dict(),
             }
             save_checkpoint(checkpoint, filename=LOAD_MODEL_FILE)
+            #save_checkpoint(checkpoint, filename="MinYoloV1.pt")
             import time
             time.sleep(10)
 

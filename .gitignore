@@ -2,3 +2,5 @@ myenv/
 __pycache__
 data
 overfit.pth.tar
+MinYoloV1.pt
+modelv1.pth.tar
